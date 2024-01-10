@@ -1,6 +1,4 @@
-<script setup>
-console.log(aaa)
-</script>
+<script setup></script>
 
 <template>
   <div class=""></div>
