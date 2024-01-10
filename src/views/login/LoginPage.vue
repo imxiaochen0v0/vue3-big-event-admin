@@ -1,11 +1,20 @@
 <script setup>
-import { userRegisterService, userLoginService } from '@/api/user'
-import { useUserStore } from '@/stores/index'
 import { User, Lock } from '@element-plus/icons-vue'
 import { ref, watch } from 'vue'
+import { userRegisterService, userLoginService } from '@/api/user'
+import { useUserStore } from '@/stores/index'
 import { useRouter } from 'vue-router'
 
+// 切换登录或注册 并在切换时清空表单数据
 const isRegister = ref(false)
+watch(isRegister, () => {
+  formModel.value = {
+    username: '',
+    password: '',
+    repassword: ''
+  }
+})
+// 表单实例 数据 规则
 const form = ref()
 const formModel = ref({
   username: '',
@@ -61,172 +70,193 @@ const rules = {
     }
   ]
 }
+// 注册
 const register = async () => {
   await form.value.validate()
   await userRegisterService(formModel.value)
   ElMessage.success('注册成功')
   isRegister.value = false
 }
-
+// 登录
 const userStore = useUserStore()
 const router = useRouter()
 const login = async () => {
   await form.value.validate()
+  const loading = ElLoading.service({
+    lock: true,
+    text: 'Loading',
+    background: 'rgba(0, 0, 0, 0.5)'
+  })
   const res = await userLoginService(formModel.value)
   userStore.setToken(res.data.token)
+  loading.close()
   ElMessage.success('登录成功')
   router.push('/')
 }
-watch(isRegister, () => {
-  formModel.value = {
-    username: '',
-    password: '',
-    repassword: ''
-  }
-})
 </script>
 
 <template>
-  <el-row class="login-page">
-    <el-col :span="12" class="bg"></el-col>
-    <el-col :span="6" :offset="3" class="form">
-      <!-- 注册 -->
-      <el-form
-        status-icon
-        :model="formModel"
-        :rules="rules"
-        ref="form"
-        size="large"
-        autocomplete="off"
-        v-if="isRegister"
-      >
-        <el-form-item>
-          <h1>注册</h1>
-        </el-form-item>
-        <el-form-item prop="username">
-          <el-input
-            v-model="formModel.username"
-            :prefix-icon="User"
-            placeholder="请输入用户名"
-          ></el-input>
-        </el-form-item>
-        <el-form-item prop="password">
-          <el-input
-            v-model="formModel.password"
-            :prefix-icon="Lock"
-            type="password"
-            placeholder="请输入密码"
-          ></el-input>
-        </el-form-item>
-        <el-form-item prop="repassword">
-          <el-input
-            v-model="formModel.repassword"
-            :prefix-icon="Lock"
-            type="password"
-            placeholder="请输入再次密码"
-          ></el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-button
-            @click="register"
-            class="button"
-            type="primary"
-            auto-insert-space
+  <div class="LoginPage">
+    <el-card>
+      <el-row class="login-page">
+        <el-col :span="12" class="bg"></el-col>
+        <el-col :span="11" class="form">
+          <!-- 注册 -->
+          <el-form
+            status-icon
+            :model="formModel"
+            :rules="rules"
+            ref="form"
+            size="large"
+            autocomplete="off"
+            v-if="isRegister"
           >
-            注册
-          </el-button>
-        </el-form-item>
-        <el-form-item class="flex">
-          <el-link type="info" :underline="false" @click="isRegister = false">
-            ← 返回
-          </el-link>
-        </el-form-item>
-      </el-form>
-
-      <!-- 登录 -->
-      <el-form
-        status-icon
-        :model="formModel"
-        :rules="rules"
-        ref="form"
-        size="large"
-        autocomplete="off"
-        v-else
-      >
-        <el-form-item>
-          <h1>登录</h1>
-        </el-form-item>
-        <el-form-item prop="username">
-          <el-input
-            v-model="formModel.username"
-            :prefix-icon="User"
-            placeholder="请输入用户名"
-          ></el-input>
-        </el-form-item>
-        <el-form-item prop="password">
-          <el-input
-            v-model="formModel.password"
-            name="password"
-            :prefix-icon="Lock"
-            type="password"
-            placeholder="请输入密码"
-          ></el-input>
-        </el-form-item>
-        <el-form-item class="flex">
-          <div class="flex">
-            <el-checkbox>记住我</el-checkbox>
-            <el-link type="primary" :underline="false">忘记密码？</el-link>
-          </div>
-        </el-form-item>
-        <el-form-item>
-          <el-button
-            @click="login"
-            class="button"
-            type="primary"
-            auto-insert-space
-            >登录</el-button
+            <el-form-item>
+              <h1>注册</h1>
+            </el-form-item>
+            <el-form-item prop="username">
+              <el-input
+                v-model="formModel.username"
+                :prefix-icon="User"
+                placeholder="请输入用户名"
+              ></el-input>
+            </el-form-item>
+            <el-form-item prop="password">
+              <el-input
+                v-model="formModel.password"
+                :prefix-icon="Lock"
+                type="password"
+                placeholder="请输入密码"
+              ></el-input>
+            </el-form-item>
+            <el-form-item prop="repassword">
+              <el-input
+                v-model="formModel.repassword"
+                :prefix-icon="Lock"
+                type="password"
+                placeholder="请输入再次密码"
+              ></el-input>
+            </el-form-item>
+            <el-form-item>
+              <el-button
+                @click="register"
+                class="button"
+                type="primary"
+                auto-insert-space
+              >
+                注册
+              </el-button>
+            </el-form-item>
+            <el-form-item class="flex">
+              <el-link
+                type="info"
+                :underline="false"
+                @click="isRegister = false"
+              >
+                ← 返回
+              </el-link>
+            </el-form-item>
+          </el-form>
+          <!-- 登录 -->
+          <el-form
+            status-icon
+            :model="formModel"
+            :rules="rules"
+            ref="form"
+            size="large"
+            autocomplete="off"
+            v-else
           >
-        </el-form-item>
-        <el-form-item class="flex">
-          <el-link type="info" :underline="false" @click="isRegister = true">
-            注册 →
-          </el-link>
-        </el-form-item>
-      </el-form>
-    </el-col>
-  </el-row>
+            <el-form-item>
+              <h1>登录</h1>
+            </el-form-item>
+            <el-form-item prop="username">
+              <el-input
+                v-model="formModel.username"
+                :prefix-icon="User"
+                placeholder="请输入用户名"
+              ></el-input>
+            </el-form-item>
+            <el-form-item prop="password">
+              <el-input
+                v-model="formModel.password"
+                name="password"
+                :prefix-icon="Lock"
+                type="password"
+                placeholder="请输入密码"
+              ></el-input>
+            </el-form-item>
+            <el-form-item class="flex">
+              <div class="flex">
+                <el-checkbox>记住我</el-checkbox>
+                <el-link type="primary" :underline="false">忘记密码？</el-link>
+              </div>
+            </el-form-item>
+            <el-form-item>
+              <el-button
+                @click="login"
+                class="button"
+                type="primary"
+                auto-insert-space
+                >登录</el-button
+              >
+            </el-form-item>
+            <el-form-item class="flex">
+              <el-link
+                type="info"
+                :underline="false"
+                @click="isRegister = true"
+              >
+                注册 →
+              </el-link>
+            </el-form-item>
+          </el-form>
+        </el-col>
+      </el-row>
+    </el-card>
+  </div>
 </template>
 
 <style lang="scss" scoped>
-.login-page {
+.LoginPage {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   height: 100vh;
-  background-color: #fff;
-
-  .bg {
-    background:
-      url('@/assets/logo2.png') no-repeat 60% center / 240px auto,
-      url('@/assets/login_bg.jpg') no-repeat center / cover;
-    border-radius: 0 20px 20px 0;
-  }
-
-  .form {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    user-select: none;
-
-    .title {
-      margin: 0 auto;
-    }
-
-    .button {
-      width: 100%;
-    }
-
-    .flex {
-      width: 100%;
+  .el-card {
+    width: 60vw;
+    border-radius: 20px;
+    .login-page {
       display: flex;
       justify-content: space-between;
+      .bg {
+        background:
+          url('@/assets/logo2.png') no-repeat 60% center / 240px auto,
+          url('@/assets/login_bg.jpg') no-repeat center / cover;
+        border-radius: 20px;
+      }
+
+      .form {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        user-select: none;
+
+        .title {
+          margin: 0 auto;
+        }
+
+        .button {
+          width: 100%;
+        }
+
+        .flex {
+          width: 100%;
+          display: flex;
+          justify-content: space-between;
+        }
+      }
     }
   }
 }

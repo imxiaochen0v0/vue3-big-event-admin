@@ -3,7 +3,6 @@ import { useUserStore } from '@/stores/index'
 import router from '@/router'
 
 const baseURL = 'http://big-event-vue-api-t.itheima.net'
-
 const instance = axios.create({
   // TODO 1. 基础地址，超时时间
   baseURL,
@@ -32,7 +31,6 @@ instance.interceptors.response.use(
     if (response.data.code === 0) {
       return response
     }
-    // TODO 4. 处理业务失败
     ElMessage({ message: response.data.message || '服务异常', type: 'error' })
     return Promise.reject(response.data)
   },
