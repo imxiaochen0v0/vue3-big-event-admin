@@ -1,5 +1,8 @@
 <script setup>
-import { articleGetChannelsService } from '@/api/article'
+import {
+  articleGetChannelsService,
+  articleDelChannelService
+} from '@/api/article'
 import { ref } from 'vue'
 import { Edit, Delete } from '@element-plus/icons-vue'
 import ChannelEdit from './components/ChannelEdit.vue'
@@ -16,22 +19,29 @@ const getChannelList = async () => {
 }
 getChannelList()
 
-// 添加删除表格
+// 添加删除修改文章分类
 const dialog = ref()
-const onEditChannel = (row) => {
+const onEditChannel = async (row) => {
   dialog.value.open(row)
 }
-const onDelChannel = (row, index) => {
-  console.log('🚀 ~ demo ~ row:', row)
-  console.log('🚀 ~ demo ~ index:', index)
+const onDelChannel = async (row) => {
+  await ElMessageBox.confirm('您确定要删除该分类吗?', 'Warning', {
+    confirmButtonText: 'OK',
+    cancelButtonText: 'Cancel',
+    type: 'warning'
+  })
+  await articleDelChannelService(row.id)
+  await ElMessage.success('删除成功')
+  // 删除成功后 重新获取最新数据
+  await getChannelList()
 }
 const onAddChannel = () => {
   dialog.value.open({})
 }
 
 // 修改或添加后 重新获取最新数据
-const onSuccess = () => {
-  getChannelList()
+const onSuccess = async () => {
+  await getChannelList()
 }
 </script>
 
@@ -81,7 +91,7 @@ const onSuccess = () => {
           <el-empty description="description" />
         </template>
       </el-table>
-
+      <!-- 弹出层组件 -->
       <ChannelEdit ref="dialog" @success="onSuccess"></ChannelEdit>
     </PageContainer>
   </div>

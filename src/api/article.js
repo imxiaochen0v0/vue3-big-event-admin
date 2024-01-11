@@ -32,5 +32,9 @@ export const articleEditChannelService = (data) => {
  * @returns promise
  */
 export const articleDelChannelService = (id) => {
-  return request.delete('/my/cate/del', id)
+  return request.delete('/my/cate/del', {
+    params: {
+      id
+    }
+  })
 }
