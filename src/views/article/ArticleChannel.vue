@@ -19,7 +19,6 @@ getChannelList()
 // 添加删除表格
 const dialog = ref()
 const onEditChannel = (row) => {
-  row.title = '编辑分类'
   dialog.value.open(row)
 }
 const onDelChannel = (row, index) => {
@@ -27,7 +26,12 @@ const onDelChannel = (row, index) => {
   console.log('🚀 ~ demo ~ index:', index)
 }
 const onAddChannel = () => {
-  dialog.value.open({ title: '添加分类' })
+  dialog.value.open({})
+}
+
+// 修改或添加后 重新获取最新数据
+const onSuccess = () => {
+  getChannelList()
 }
 </script>
 
@@ -78,7 +82,7 @@ const onAddChannel = () => {
         </template>
       </el-table>
 
-      <ChannelEdit ref="dialog"></ChannelEdit>
+      <ChannelEdit ref="dialog" @success="onSuccess"></ChannelEdit>
     </PageContainer>
   </div>
 </template>
