@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 
+// 打开关闭弹窗 和 获取父组件行数据
 const dialogVisible = ref(false)
 const rows = ref({})
 const open = async (row) => {
