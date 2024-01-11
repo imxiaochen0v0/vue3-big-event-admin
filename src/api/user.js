@@ -17,3 +17,10 @@ export const userRegisterService = ({ username, password, repassword }) => {
 export const userLoginService = ({ username, password }) => {
   return request.post('/api/login', { username, password })
 }
+/**
+ * 用户信息接口
+ * @returns promise
+ */
+export const userGetInfoService = () => {
+  return request.get('/my/userinfo')
+}
