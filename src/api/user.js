@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 /**
  * 注册接口
- * @param {object} { username, password, repassword }
+ * @param {object}
  * @returns promise
  */
 export const userRegisterService = ({ username, password, repassword }) => {
@@ -11,7 +11,7 @@ export const userRegisterService = ({ username, password, repassword }) => {
 
 /**
  * 登录接口
- * @param {object} { username, password }
+ * @param {object}
  * @returns promise
  */
 export const userLoginService = ({ username, password }) => {
