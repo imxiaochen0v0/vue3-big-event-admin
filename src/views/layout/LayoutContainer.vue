@@ -113,6 +113,7 @@ const handleCommand = async (key) => {
           <el-main>
             <router-view></router-view>
           </el-main>
+          <!-- 底部 -->
           <el-footer>大事件 ©2023 Created by 黑马程序员</el-footer>
         </el-container>
       </el-container>
