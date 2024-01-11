@@ -19,6 +19,7 @@ getChannelList()
 // 添加删除表格
 const dialog = ref()
 const onEditChannel = (row) => {
+  row.title = '编辑分类'
   dialog.value.open(row)
 }
 const onDelChannel = (row, index) => {
@@ -26,7 +27,7 @@ const onDelChannel = (row, index) => {
   console.log('🚀 ~ demo ~ index:', index)
 }
 const onAddChannel = () => {
-  dialog.value.open({})
+  dialog.value.open({ title: '添加分类' })
 }
 </script>
 
