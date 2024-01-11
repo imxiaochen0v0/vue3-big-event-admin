@@ -24,3 +24,11 @@ export const userLoginService = ({ username, password }) => {
 export const userGetInfoService = () => {
   return request.get('/my/userinfo')
 }
+
+/**
+ * 更新用户基本信息接口
+ * @returns promise
+ */
+export const userUpdateInfoService = (data) => {
+  return request.put('/my/userinfo', data)
+}
