@@ -35,9 +35,18 @@ export const userUpdateInfoService = (data) => {
 
 /**
  * 更新用户头像
- * @param {string} data
+ * @param {string} avatar
  * @returns promise
  */
 export const userUpdateAvatarService = (avatar) => {
   return request.patch('/my/update/avatar', { avatar })
+}
+
+/**
+ * 更新用户密码
+ * @param {object}
+ * @returns promise
+ */
+export const userUpdatePasswordService = ({ old_pwd, new_pwd, re_pwd }) => {
+  return request.patch('/my/updatepwd', { old_pwd, new_pwd, re_pwd })
 }
