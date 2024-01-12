@@ -70,28 +70,34 @@ const rules = {
     }
   ]
 }
+
+const loading = ref(false)
 // 注册
 const register = async () => {
   await form.value.validate()
-  await userRegisterService(formModel.value)
-  ElMessage.success('注册成功')
-  isRegister.value = false
+  loading.value = true
+  try {
+    await userRegisterService(formModel.value)
+    ElMessage.success('注册成功')
+    isRegister.value = false
+  } catch (error) {
+    loading.value = false
+  }
 }
 // 登录
 const userStore = useUserStore()
 const router = useRouter()
 const login = async () => {
   await form.value.validate()
-  const loading = ElLoading.service({
-    lock: true,
-    text: 'Loading',
-    background: 'rgba(0, 0, 0, 0.5)'
-  })
-  const res = await userLoginService(formModel.value)
-  userStore.setToken(res.data.token)
-  loading.close()
-  ElMessage.success('登录成功')
-  router.push('/')
+  loading.value = true
+  try {
+    const res = await userLoginService(formModel.value)
+    userStore.setToken(res.data.token)
+    ElMessage.success('登录成功')
+    router.push('/')
+  } catch (error) {
+    loading.value = false
+  }
 }
 </script>
 
@@ -139,6 +145,7 @@ const login = async () => {
             </el-form-item>
             <el-form-item>
               <el-button
+                :loading="loading"
                 @click="register"
                 class="button"
                 type="primary"
@@ -198,6 +205,7 @@ const login = async () => {
                 class="button"
                 type="primary"
                 auto-insert-space
+                :loading="loading"
                 >登录</el-button
               >
             </el-form-item>
