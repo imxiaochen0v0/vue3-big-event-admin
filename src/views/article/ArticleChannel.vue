@@ -46,7 +46,7 @@ const onSuccess = async () => {
 </script>
 
 <template>
-  <div class="">
+  <div class="ArticleChannel">
     <PageContainer title="文章分类">
       <template #extra>
         <el-button type="primary" @click="onAddChannel">添加分类</el-button>
@@ -97,4 +97,8 @@ const onSuccess = async () => {
   </div>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.ArticleChannel {
+  height: 100%;
+}
+</style>

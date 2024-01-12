@@ -27,7 +27,7 @@ const uploadImage = async () => {
 </script>
 
 <template>
-  <div class="">
+  <div class="UserAvatar">
     <el-card>
       <template #header> 更换头像 </template>
       <!-- 选择头像 -->
@@ -49,6 +49,13 @@ const uploadImage = async () => {
 </template>
 
 <style lang="scss">
+.UserAvatar {
+  height: 100%;
+
+  .el-card {
+    height: 100%;
+  }
+}
 .avatar-uploader {
   .avatar {
     width: 200px;
