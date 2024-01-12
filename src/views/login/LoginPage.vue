@@ -79,6 +79,7 @@ const register = async () => {
   try {
     await userRegisterService(formModel.value)
     ElMessage.success('注册成功')
+    loading.value = false
     isRegister.value = false
   } catch (error) {
     loading.value = false
@@ -94,6 +95,7 @@ const login = async () => {
     const res = await userLoginService(formModel.value)
     userStore.setToken(res.data.token)
     ElMessage.success('登录成功')
+    loading.value = false
     router.push('/')
   } catch (error) {
     loading.value = false
