@@ -231,9 +231,7 @@ const login = async () => {
       display: flex;
       justify-content: space-between;
       .bg {
-        background:
-          url('@/assets/logo2.png') no-repeat 60% center / 240px auto,
-          url('@/assets/login_bg.jpg') no-repeat center / cover;
+        background: url('/favicon.ico') no-repeat center / cover;
         border-radius: 20px;
       }
 
