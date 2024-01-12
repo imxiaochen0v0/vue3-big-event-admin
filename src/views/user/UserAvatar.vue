@@ -4,7 +4,8 @@ import { ref } from 'vue'
 import { userUpdateAvatarService } from '@/api/user'
 import { useUserStore } from '@/stores/index'
 
-const uploadImageBase64 = ref()
+const userStore = useUserStore()
+const uploadImageBase64 = ref(userStore.user.user_pic)
 // 选择头像
 const changeImage = (uploadFile) => {
   // 创建FileReader对象 用于读取文件内容
@@ -18,7 +19,6 @@ const changeImage = (uploadFile) => {
 }
 
 // 上传头像
-const userStore = useUserStore()
 const uploadImage = async () => {
   await userUpdateAvatarService(uploadImageBase64.value)
   await ElMessage.success('更换头像成功')
@@ -37,11 +37,7 @@ const uploadImage = async () => {
         :show-file-list="false"
         :auto-upload="false"
       >
-        <img
-          v-if="uploadImageBase64 || userStore.user.user_pic"
-          :src="uploadImageBase64 || userStore.user.user_pic"
-          class="avatar"
-        />
+        <img v-if="uploadImageBase64" :src="uploadImageBase64" class="avatar" />
         <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
       </el-upload>
       <!-- 提交头像 -->
