@@ -111,9 +111,11 @@ const handleCommand = async (key) => {
         </el-header>
         <el-container>
           <el-main>
-            <Transition name="bounce">
-              <router-view></router-view>
-            </Transition>
+            <router-view v-slot="{ Component }">
+              <Transition name="bounce">
+                <component :is="Component" />
+              </Transition>
+            </router-view>
           </el-main>
           <!-- 底部 -->
           <el-footer>大事件 ©2023 Created by 黑马程序员</el-footer>
