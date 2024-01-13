@@ -38,3 +38,62 @@ export const articleDelChannelService = (id) => {
     }
   })
 }
+
+/**
+ * 获取文章列表
+ * @param {number} id
+ * @returns promise
+ */
+export const articleListService = ({ pagenum, pagesize, cate_id, state }) => {
+  return request.get('/my/article/list', {
+    params: {
+      pagenum,
+      pagesize,
+      cate_id,
+      state
+    }
+  })
+}
+/**
+ * 删除文章列表
+ * @param {number} id
+ * @returns promise
+ */
+export const articleDelListService = (id) => {
+  return request.delete('/my/article/info', {
+    params: {
+      id
+    }
+  })
+}
+
+/**
+ * 获取文章详情
+ * @param {number} id
+ * @returns promise
+ */
+export const articleDetailsService = (id) => {
+  return request.get('/my/article/info', {
+    params: {
+      id
+    }
+  })
+}
+
+/**
+ * 发布文章
+ * @param {FormData} data
+ * @returns promise
+ */
+export const articleAddService = (data) => {
+  return request.post('/my/article/add', data)
+}
+
+/**
+ * 编辑文章
+ * @param {FormData} data
+ * @returns promise
+ */
+export const articleEditService = (data) => {
+  return request.put('/my/article/info', data)
+}
